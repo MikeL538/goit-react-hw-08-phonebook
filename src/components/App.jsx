@@ -1,102 +1,71 @@
+// App.jsx
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, deleteContact, setFilter, saveContacts } from './actions';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
-import { contacts as contactsData } from 'data/contacts';
-import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
 import css from './App.module.css';
+import { nanoid } from 'nanoid';
 
 export const App = () => {
-  const [state, setState] = useState({
-    contacts: contactsData,
-    filter: '',
-    name: '',
-    number: '',
-  });
+  const dispatch = useDispatch();
+  const { contacts, filter } = useSelector(state => state.contacts);
 
-  const { name, number, contacts, filter } = state;
-  const contactExists = contacts.some(
-    contact => contact.name === name || contact.number === number
-  );
+  useEffect(() => {
+    // Dispatch the saveContacts action to trigger the middleware
+    dispatch(saveContacts());
+  }, [contacts, dispatch]);
 
-  const addNewContact = newContact => {
-    const updatedContacts = [...contacts, newContact];
-    setState(prevState => ({
-      ...prevState,
-      contacts: updatedContacts,
-      name: '',
-      number: '',
-    }));
-    updateLocalStorage(updatedContacts);
-  };
-
-  const handleAddContact = event => {
-    event.preventDefault();
-    const newContact = {
+  const handleAddContact = newContact => {
+    const formattedContact = {
       id: nanoid(),
-      name,
-      number,
+      ...newContact,
     };
+
+    const contactExists = contacts.some(
+      contact =>
+        contact.name.toLowerCase() === formattedContact.name.toLowerCase() ||
+        contact.number === formattedContact.number
+    );
 
     if (contactExists) {
       alert('This contact is already in your phonebook!');
       return;
     }
-    addNewContact(newContact);
+
+    dispatch(addContact(formattedContact));
   };
 
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setState(prevState => ({ ...prevState, [name]: value }));
+  const handleDeleteContact = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
   const handleFilterChange = newFilter => {
-    setState(prevState => ({ ...prevState, filter: newFilter }));
-  };
-
-  const deleteContact = contactId => {
-    const updatedContacts = contacts.filter(
-      contact => contact.id !== contactId
-    );
-    setState(prevState => ({ ...prevState, contacts: updatedContacts }));
-    updateLocalStorage(updatedContacts);
+    dispatch(setFilter(newFilter));
   };
 
   const getFilteredContacts = () => {
     return contacts.filter(contact => {
       const { name, number } = contact;
       return (
-        name.toLowerCase().includes(filter.toLowerCase()) ||
-        number.includes(filter)
+        name &&
+        number &&
+        (name.toLowerCase().includes(filter.toLowerCase()) ||
+          number.includes(filter))
       );
     });
   };
 
-  const updateLocalStorage = updatedContacts => {
-    localStorage.setItem('contacts', JSON.stringify(updatedContacts));
-  };
-
-  useEffect(() => {
-    const storedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (storedContacts) {
-      setState(prevState => ({ ...prevState, contacts: storedContacts }));
-    }
-  }, []);
-
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
-      <ContactForm
-        name={name}
-        number={number}
-        handleInputChange={handleInputChange}
-        handleAddContact={handleAddContact}
-      />
+      <ContactForm handleAddContact={handleAddContact} />
       <h2>Contacts</h2>
       <Filter handleFilterChange={handleFilterChange} />
       <ContactList
         contacts={getFilteredContacts()}
-        onDeleteContact={deleteContact}
+        onDeleteContact={handleDeleteContact}
       />
     </div>
   );

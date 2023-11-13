@@ -1,19 +1,40 @@
+//ContactForm.jsx
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../actions';
 import css from './contactForm.module.css';
+import { nanoid } from 'nanoid';
 
-export const ContactForm = ({
-  name,
-  number,
-  handleInputChange,
-  handleAddContact,
-}) => {
-  const [value, setValue] = useState(number);
+export const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
-  const handleChange = event => {
-    const result = event.target.value.replace(/[^\d\s-+()]/g, ''); // Allows numbers, spaces, dashes, pluses and brackets
-    setValue(result);
-    handleInputChange(event);
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    name === 'name' ? setName(value) : setNumber(value);
+  };
+
+  const handleAddContact = event => {
+    event.preventDefault();
+
+    if (!name || !number) {
+      alert('Please enter both name and number.');
+      return;
+    }
+
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    dispatch(addContact(newContact));
+
+    // Reset form state
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -31,11 +52,9 @@ export const ContactForm = ({
       <input
         type="tel"
         name="number"
-        value={value}
-        onChange={handleChange}
+        value={number}
+        onChange={handleInputChange}
         maxLength={15}
-        // +1242 (Bahamas) 123 456 789 - 14 characters not counting spaces.
-        // +48 123 456 789 - 15 characters with spaces so I guess 15 is the safest spot with keeping balance with styles.
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
       />
@@ -47,8 +66,5 @@ export const ContactForm = ({
 };
 
 ContactForm.propTypes = {
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
   handleAddContact: PropTypes.func.isRequired,
 };

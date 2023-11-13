@@ -1,3 +1,4 @@
+// ConstactListItem.jsx
 import PropTypes from 'prop-types';
 import css from './ContactListItem.module.css';
 
@@ -10,7 +11,7 @@ export const ContactListItem = ({ contact, onDeleteContact }) => {
     <li>
       <div className={css.listItem}>
         <span className={css.listItemSpan}>
-          {contact.name} <br />{' '}
+          {contact.name} <br />
           <span className={css.listItemNumber}> {contact.number} </span>
         </span>
         <button
