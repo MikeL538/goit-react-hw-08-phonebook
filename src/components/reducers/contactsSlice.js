@@ -4,9 +4,23 @@ import { saveContacts } from '../actions';
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: { contacts: [], filter: '' },
+
   reducers: {
     addContact: (state, action) => {
-      state.contacts.push(action.payload);
+      const newContact = action.payload;
+
+      const contactExists = state.contacts.some(
+        contact =>
+          contact.name.toLowerCase() === newContact.name.toLowerCase() ||
+          contact.number === newContact.number
+      );
+
+      if (contactExists) {
+        alert('This contact is already in your phonebook!');
+        return state;
+      }
+
+      state.contacts.push(newContact);
     },
     deleteContact: (state, action) => {
       state.contacts = state.contacts.filter(

@@ -12,7 +12,6 @@ export const App = () => {
   const { contacts, filter } = useSelector(state => state.contacts);
 
   useEffect(() => {
-    // Dispatch the saveContacts action to trigger the middleware
     dispatch(saveContacts());
   }, [contacts, dispatch]);
 
@@ -21,17 +20,6 @@ export const App = () => {
       id: nanoid(),
       ...newContact,
     };
-
-    const contactExists = contacts.some(
-      contact =>
-        contact.name.toLowerCase() === formattedContact.name.toLowerCase() ||
-        contact.number === formattedContact.number
-    );
-
-    if (contactExists) {
-      alert('This contact is already in your phonebook!');
-      return;
-    }
 
     dispatch(addContact(formattedContact));
   };
