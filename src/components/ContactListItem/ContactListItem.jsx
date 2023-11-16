@@ -1,4 +1,3 @@
-// ConstactListItem.jsx
 import PropTypes from 'prop-types';
 import css from './ContactListItem.module.css';
 

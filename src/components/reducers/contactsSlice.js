@@ -1,6 +1,5 @@
-// contactsSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { saveContacts as saveContactsAction } from '../actions';
+import { saveContacts } from '../actions';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -19,7 +18,7 @@ const contactsSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(saveContactsAction, (state, action) => {
+    builder.addCase(saveContacts, state => {
       localStorage.setItem('contacts', JSON.stringify(state.contacts));
     });
   },

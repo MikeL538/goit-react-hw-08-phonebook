@@ -1,4 +1,3 @@
-// ContactList.jsx
 import PropTypes from 'prop-types';
 import { ContactListItem } from 'components/ContactListItem/ContactListItem';
 import css from './ContactList.module.css';

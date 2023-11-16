@@ -1,4 +1,3 @@
-// Filter.jsx
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { setFilter } from '../actions';
