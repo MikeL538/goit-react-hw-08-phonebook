@@ -1,25 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { saveContacts } from '../actions';
+import {
+  fetchContacts,
+  fetchContactsSuccess,
+  fetchContactsFailure,
+} from '../actions';
+import axios from 'axios';
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: { contacts: [], filter: '' },
+  initialState: { contacts: [], filter: '', loading: false, error: null },
 
   reducers: {
     addContact: (state, action) => {
       const newContact = action.payload;
-
-      const contactExists = state.contacts.some(
-        contact =>
-          contact.name.toLowerCase() === newContact.name.toLowerCase() ||
-          contact.number === newContact.number
-      );
-
-      if (contactExists) {
-        alert('This contact is already in your phonebook!');
-        return state;
-      }
-
       state.contacts.push(newContact);
     },
     deleteContact: (state, action) => {
@@ -32,11 +25,33 @@ const contactsSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(saveContacts, state => {
-      localStorage.setItem('contacts', JSON.stringify(state.contacts));
-    });
+    builder
+      .addCase(fetchContacts, state => {
+        state.loading = true;
+      })
+      .addCase(fetchContactsSuccess, (state, action) => {
+        state.loading = false;
+        state.contacts = action.payload;
+      })
+      .addCase(fetchContactsFailure, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
+
+export const saveContactToBackend = newContact => async dispatch => {
+  try {
+    await axios.post(
+      'https://656b179ddac3630cf727ab1f.mockapi.io/contacts',
+      newContact
+    );
+    dispatch(addContact(newContact));
+  } catch (error) {
+    console.error('Failed to save contact to the backend:', error.message);
+  }
+};
+
 export default contactsSlice.reducer;

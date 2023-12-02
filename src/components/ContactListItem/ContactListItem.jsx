@@ -10,8 +10,8 @@ export const ContactListItem = ({ contact, onDeleteContact }) => {
     <li>
       <div className={css.listItem}>
         <span className={css.listItemSpan}>
-          {contact.name} <br />
-          <span className={css.listItemNumber}> {contact.number} </span>
+          <strong>{contact.name}</strong> <br />
+          {contact.phone}
         </span>
         <button
           className={css.deleteButtons}
@@ -29,7 +29,7 @@ ContactListItem.propTypes = {
   contact: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
   }).isRequired,
   onDeleteContact: PropTypes.func.isRequired,
 };

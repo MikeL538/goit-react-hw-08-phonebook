@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
   const dispatch = useDispatch();
 
   const handleInputChange = event => {
@@ -18,7 +18,7 @@ export const ContactForm = () => {
   const handleAddContact = event => {
     event.preventDefault();
 
-    if (!name || !number) {
+    if (!name || !phone) {
       alert('Please enter both name and number.');
       return;
     }
@@ -26,7 +26,7 @@ export const ContactForm = () => {
     const newContact = {
       id: nanoid(),
       name,
-      number,
+      phone,
     };
 
     dispatch(addContact(newContact));
@@ -51,7 +51,7 @@ export const ContactForm = () => {
       <input
         type="tel"
         name="number"
-        value={number}
+        value={phone}
         onChange={handleInputChange}
         maxLength={15}
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
