@@ -2,7 +2,7 @@
 
 This is a simple phonebook application built using React. It allows you to add,
 search, and delete contacts.
-https://mikel538.github.io/goit-react-hw-06-phonebook/
+https://mikel538.github.io/goit-react-hw-07-phonebook/
 
 ## Features
 
@@ -15,7 +15,7 @@ https://mikel538.github.io/goit-react-hw-06-phonebook/
 ## Installation
 
 1. Clone the repository to your local machine: git clone
-   https://github.com/MikeL538/goit-react-hw-06-phonebook.git
+   https://github.com/MikeL538/goit-react-hw-07-phonebook.git
 
 2. Change directory to the project folder: cd phonebook-app
 
