@@ -34,6 +34,7 @@ export const asyncSaveContact = newContact => async dispatch => {
       'https://656b179ddac3630cf727ab1f.mockapi.io/contacts',
       newContact
     );
+    dispatch(addContact(newContact));
   } catch (error) {
     console.error('Failed to save contact to the backend:', error.message);
   }

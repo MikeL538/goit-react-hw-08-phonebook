@@ -42,13 +42,12 @@ const contactsSlice = createSlice({
 
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
 
-export const saveContactToBackend = newContact => async dispatch => {
+export const saveContactToBackend = newContact => async () => {
   try {
     await axios.post(
       'https://656b179ddac3630cf727ab1f.mockapi.io/contacts',
       newContact
     );
-    dispatch(addContact(newContact));
   } catch (error) {
     console.error('Failed to save contact to the backend:', error.message);
   }

@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addContact } from '../actions';
 import css from './contactForm.module.css';
 import { nanoid } from 'nanoid';
 
-export const ContactForm = () => {
+export const ContactForm = ({ handleAddContact }) => {
   const [name, setName] = useState('');
   const [phone, setNumber] = useState('');
   const dispatch = useDispatch();
@@ -15,7 +14,7 @@ export const ContactForm = () => {
     name === 'name' ? setName(value) : setNumber(value);
   };
 
-  const handleAddContact = event => {
+  const handleSubmit = event => {
     event.preventDefault();
 
     if (!name || !phone) {
@@ -29,6 +28,9 @@ export const ContactForm = () => {
       phone,
     };
 
+    console.log('ContactForm Worked after "Add Contact"');
+    handleAddContact(newContact);
+
     dispatch(addContact(newContact));
 
     // Reset form state
@@ -37,7 +39,7 @@ export const ContactForm = () => {
   };
 
   return (
-    <form className={css.form} onSubmit={handleAddContact}>
+    <form className={css.form} onSubmit={handleSubmit}>
       <p>Name</p>
       <input
         type="text"
@@ -50,7 +52,7 @@ export const ContactForm = () => {
       <p>Number</p>
       <input
         type="tel"
-        name="number"
+        name="phone"
         value={phone}
         onChange={handleInputChange}
         maxLength={15}
@@ -62,8 +64,4 @@ export const ContactForm = () => {
       </button>
     </form>
   );
-};
-
-ContactForm.propTypes = {
-  handleAddContact: PropTypes.func.isRequired,
 };
