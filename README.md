@@ -10,7 +10,7 @@ https://mikel538.github.io/goit-react-hw-07-phonebook/
 - Prevents adding duplicate contacts.
 - Filter and search for contacts by name or phone number.
 - Delete contacts from the phonebook.
-- Data is stored in local storage for persistence.
+- Data is stored in the backend using MockAPI
 
 ## Installation
 
