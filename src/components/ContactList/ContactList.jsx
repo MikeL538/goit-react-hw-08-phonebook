@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { ContactListItem } from './components/ConstactListItem/ConstactListItem';
+import { ContactListItem } from './components/ContactListItem/ContactListItem';
 import css from './ContactList.module.css';
 
 export const ContactList = ({ onDeleteContact }) => {
