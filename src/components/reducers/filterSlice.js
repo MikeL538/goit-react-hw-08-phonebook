@@ -1,3 +1,4 @@
+// filterSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { setFilter } from '../actions';
 

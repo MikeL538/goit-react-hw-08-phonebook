@@ -1,10 +1,11 @@
+// ContactForm.jsx
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addContact } from '../actions';
 import css from './contactForm.module.css';
 import { nanoid } from 'nanoid';
 
-export const ContactForm = ({ handleAddContact }) => {
+export const ContactForm = ({ handleAddContact, contacts }) => {
   const [name, setName] = useState('');
   const [phone, setNumber] = useState('');
   const dispatch = useDispatch();
@@ -17,8 +18,12 @@ export const ContactForm = ({ handleAddContact }) => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (!name || !phone) {
-      alert('Please enter both name and number.');
+    const contactExists = contacts.some(
+      contact => contact.name === name || contact.phone === phone
+    );
+
+    if (contactExists) {
+      alert('This contact already exists.');
       return;
     }
 
@@ -28,7 +33,6 @@ export const ContactForm = ({ handleAddContact }) => {
       phone,
     };
 
-    console.log('ContactForm Worked after "Add Contact"');
     handleAddContact(newContact);
 
     dispatch(addContact(newContact));

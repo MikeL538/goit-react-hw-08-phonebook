@@ -1,3 +1,4 @@
+// App.jsx
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact, setFilter, asyncFetchContacts } from './actions';
@@ -53,12 +54,12 @@ export const App = () => {
 
   const getFilteredContacts = () => {
     return contacts.filter(contact => {
-      const { name, number } = contact;
+      const { name, number: phone } = contact;
       return (
         name &&
-        number &&
+        phone &&
         (name.toLowerCase().includes(filter.toLowerCase()) ||
-          number.includes(filter))
+          phone.includes(filter))
       );
     });
   };
@@ -92,7 +93,7 @@ export const App = () => {
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
-      <ContactForm handleAddContact={handleAddContact} />
+      <ContactForm handleAddContact={handleAddContact} contacts={contacts} />
       <h2>Contacts</h2>
       <Filter handleFilterChange={handleFilterChange} />
       <ContactList
