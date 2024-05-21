@@ -19,7 +19,7 @@ export const App = () => {
   }, [dispatch]);
 
   const handleAddContact = async newContact => {
-    console.log('Click!'); // This should now be logged
+    console.log('Click!');
     try {
       const formattedContact = {
         id: nanoid(),
@@ -30,7 +30,7 @@ export const App = () => {
 
       try {
         // Save contact to the backend
-        await saveContactToBackend(formattedContact)();
+        await saveContactToBackend(formattedContact);
         // Dispatch the addContact action after saving to the backend
         dispatch(addContact(formattedContact));
       } catch (error) {
