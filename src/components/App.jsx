@@ -30,7 +30,7 @@ export const App = () => {
 
       try {
         // Save contact to the backend
-        await saveContactToBackend(formattedContact);
+        await saveContactToBackend(formattedContact)();
         // Dispatch the addContact action after saving to the backend
         dispatch(addContact(formattedContact));
       } catch (error) {
