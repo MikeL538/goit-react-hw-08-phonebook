@@ -44,7 +44,7 @@ export const ContactForm = ({ handleAddContact, contacts }) => {
 
   return (
     <form className={css.form} onSubmit={handleSubmit}>
-      <p>Name</p>
+      <p>Name:</p>
       <input
         type="text"
         name="name"
@@ -53,7 +53,7 @@ export const ContactForm = ({ handleAddContact, contacts }) => {
         maxLength={32}
         required
       />
-      <p>Number</p>
+      <p>Number:</p>
       <input
         type="tel"
         name="phone"

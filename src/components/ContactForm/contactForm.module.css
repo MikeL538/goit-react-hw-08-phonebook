@@ -6,6 +6,15 @@
   align-items: center;
 }
 
+.form p {
+  margin: 0;
+  font-size: 20px;
+}
+
+.form input {
+  margin-left: 0;
+}
+
 .button {
   background-color: burlywood;
   border-radius: 12px;

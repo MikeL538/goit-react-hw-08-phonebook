@@ -5,13 +5,16 @@
 body {
   background-color: #121212;
   color: rgb(253, 253, 206);
+  font-size: 18px;
 }
 
 .container {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 90vh;
   margin-top: 25px;
+}
+
+input {
+  height: 20px;
+  border-radius: 5px;
+  padding: 0;
+  font-size: 14px;
 }
