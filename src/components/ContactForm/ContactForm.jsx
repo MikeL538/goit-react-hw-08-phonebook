@@ -1,7 +1,6 @@
 // ContactForm.jsx
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
 import { asyncSaveContact } from '../actions'; // Use asyncSaveContact from actions.js
 import css from './contactForm.module.css';
 
