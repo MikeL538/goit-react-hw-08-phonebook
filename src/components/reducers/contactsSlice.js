@@ -1,57 +1,87 @@
-// contactSlice.js
-import { createSlice } from '@reduxjs/toolkit';
-import {
-  fetchContacts,
-  fetchContactsSuccess,
-  fetchContactsFailure,
-} from '../actions';
+// contactsSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+
+// Async thunk for fetching contacts
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchContacts',
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        'https://connections-api.herokuapp.com/contacts',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Async thunk for deleting a contact
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async ({ contactId, token }, { rejectWithValue }) => {
+    try {
+      await axios.delete(
+        `https://connections-api.herokuapp.com/contacts/${contactId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return contactId;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: { contacts: [], filter: '', loading: false, error: null },
-
+  initialState: {
+    items: [],
+    status: 'idle',
+    error: null,
+  },
   reducers: {
-    addContact: (state, action) => {
-      const newContact = action.payload;
-      state.contacts.push(newContact);
+    addContact(state, action) {
+      state.items.push(action.payload);
     },
-    deleteContact: (state, action) => {
-      state.contacts = state.contacts.filter(
+    removeContact(state, action) {
+      state.items = state.items.filter(
         contact => contact.id !== action.payload
       );
     },
-    setFilter: (state, action) => {
-      state.filter = action.payload;
+    setContacts(state, action) {
+      state.items = action.payload;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchContacts, state => {
-        state.loading = true;
+      .addCase(fetchContacts.pending, state => {
+        state.status = 'loading';
       })
-      .addCase(fetchContactsSuccess, (state, action) => {
-        state.loading = false;
-        state.contacts = action.payload;
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload;
       })
-      .addCase(fetchContactsFailure, (state, action) => {
-        state.loading = false;
+      .addCase(fetchContacts.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.payload;
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.items = state.items.filter(
+          contact => contact.id !== action.payload
+        );
       });
   },
 });
 
-export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
-
-export const saveContactToBackend = newContact => async () => {
-  try {
-    await axios.post(
-      'https://656b179ddac3630cf727ab1f.mockapi.io/contacts',
-      newContact
-    );
-  } catch (error) {
-    console.error('Failed to save contact to the backend:', error.message);
-  }
-};
-
+export const { addContact, removeContact, setContacts } = contactsSlice.actions;
 export default contactsSlice.reducer;

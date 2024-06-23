@@ -1,45 +1,35 @@
 // ContactForm.jsx
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addContact } from '../actions';
-import css from './contactForm.module.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
+import { asyncSaveContact } from '../actions'; // Use asyncSaveContact from actions.js
+import css from './contactForm.module.css';
 
-export const ContactForm = ({ handleAddContact, contacts }) => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [phone, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
+  const { token } = useSelector(state => state.auth);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    name === 'name' ? setName(value) : setNumber(value);
+    name === 'name' ? setName(value) : setPhone(value);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    const contactExists = contacts.some(
-      contact => contact.name === name || contact.phone === phone
-    );
-
-    if (contactExists) {
-      alert('This contact already exists.');
-      return;
-    }
-
     const newContact = {
-      id: nanoid(),
       name,
-      phone,
+      number: phone,
     };
 
-    handleAddContact(newContact);
-
-    dispatch(addContact(newContact));
+    // Call asyncSaveContact action with authentication token
+    dispatch(asyncSaveContact(newContact, token));
 
     // Reset form state
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (

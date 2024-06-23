@@ -1,3 +1,4 @@
+// contacts.js
 import { nanoid } from 'nanoid';
 
 export const contacts = [

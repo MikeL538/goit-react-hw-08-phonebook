@@ -1,7 +1,6 @@
 // Filter.jsx
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { setFilter } from '../actions';
+import { setFilter } from '../reducers/filterSlice';
 
 export const Filter = () => {
   const dispatch = useDispatch();
@@ -17,8 +16,4 @@ export const Filter = () => {
       onChange={handleFilterChange}
     />
   );
-};
-
-Filter.propTypes = {
-  handleFilterChange: PropTypes.func.isRequired,
 };

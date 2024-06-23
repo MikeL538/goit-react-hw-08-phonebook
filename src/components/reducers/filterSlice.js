@@ -1,16 +1,15 @@
-// filterSlice.js
+// filtherSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { setFilter } from '../actions';
 
 const filterSlice = createSlice({
   name: 'filter',
   initialState: '',
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(setFilter, (state, action) => {
+  reducers: {
+    setFilter(state, action) {
       return action.payload;
-    });
+    },
   },
 });
 
+export const { setFilter } = filterSlice.actions;
 export default filterSlice.reducer;

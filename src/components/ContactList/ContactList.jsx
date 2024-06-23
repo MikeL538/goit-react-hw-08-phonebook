@@ -5,8 +5,8 @@ import { ContactListItem } from '../ContactListItem/ContactListItem';
 import css from './ContactList.module.css';
 
 export const ContactList = ({ onDeleteContact }) => {
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.contacts.filter);
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.filter);
 
   const filteredContacts = contacts.filter(contact => {
     const { name, phone } = contact;
