@@ -4,6 +4,7 @@
   text-align: center;
   gap: 8px;
   align-items: center;
+  margin-left: 0;
 }
 
 .form p {

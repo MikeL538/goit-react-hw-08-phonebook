@@ -9,10 +9,11 @@ export const ContactList = ({ onDeleteContact }) => {
   const filter = useSelector(state => state.filter);
 
   const filteredContacts = contacts.filter(contact => {
-    const { name, phone } = contact;
+    if (!contact) return false;
+    const { name, number } = contact;
     return (
       name.toLowerCase().includes(filter.toLowerCase()) ||
-      phone.includes(filter)
+      number.includes(filter)
     );
   });
 
